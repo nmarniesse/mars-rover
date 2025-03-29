@@ -10,4 +10,5 @@ Implementation of the (Google Mars Rover challenge)[https://code.google.com/arch
 
 ```bash
 ./go.sh run main.go
+./go.sh run main.go input/challenge.txt
 ```

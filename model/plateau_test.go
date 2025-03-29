@@ -13,3 +13,8 @@ func TestItCreatesAPlateau(t *testing.T) {
 	assert.Equal(t, 4, p.MaxX)
 	assert.Equal(t, 5, p.MaxY)
 }
+
+func TestItCannotCreateAPlateauWithNegativeX(t *testing.T) {
+	_, err := CreatePlateau(-4, 5)
+	assert.Error(t, err)
+}

@@ -15,29 +15,6 @@ func TestItCreatesARover(t *testing.T) {
 	assert.Equal(t, "N", rover.Direction)
 }
 
-func TestItCreatesARoverFromLine(t *testing.T) {
-	cases := []struct {
-		line              string
-		expectedX         int
-		expectedY         int
-		expectedDirection string
-	}{
-		{"2 2 N", 2, 2, "N"},
-		{"1 2 S", 1, 2, "S"},
-		{"2 5 W", 2, 5, "W"},
-		{"0 2 E", 0, 2, "E"},
-	}
-
-	for _, c := range cases {
-		rover, err := CreateRoverFromLine(c.line)
-		assert.Nil(t, err)
-
-		assert.Equal(t, c.expectedX, rover.X)
-		assert.Equal(t, c.expectedY, rover.Y)
-		assert.Equal(t, c.expectedDirection, rover.Direction)
-	}
-}
-
 func TestItCannotCreateARoverWithWrongDirection(t *testing.T) {
 	_, err := CreateRover(1, 2, "unknown")
 	assert.Error(t, err)
@@ -67,7 +44,7 @@ func TestItMovesARoverForward(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		err := c.rover.MoveRoverForward(c.plateau)
+		err := c.rover.MoveForward(c.plateau)
 		assert.Nil(t, err)
 
 		assert.Equal(t, c.expectedX, c.rover.X)

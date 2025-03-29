@@ -7,6 +7,37 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestItCreatesAPlateauFromLine(t *testing.T) {
+	p, err := CreatePlateauFromLine("4 5")
+	assert.Nil(t, err)
+
+	assert.Equal(t, 4, p.MaxX)
+	assert.Equal(t, 5, p.MaxY)
+}
+
+func TestItCreatesARoverFromLine(t *testing.T) {
+	cases := []struct {
+		line              string
+		expectedX         int
+		expectedY         int
+		expectedDirection string
+	}{
+		{"2 2 N", 2, 2, "N"},
+		{"1 2 S", 1, 2, "S"},
+		{"2 5 W", 2, 5, "W"},
+		{"0 2 E", 0, 2, "E"},
+	}
+
+	for _, c := range cases {
+		rover, err := CreateRoverFromLine(c.line)
+		assert.Nil(t, err)
+
+		assert.Equal(t, c.expectedX, rover.X)
+		assert.Equal(t, c.expectedY, rover.Y)
+		assert.Equal(t, c.expectedDirection, rover.Direction)
+	}
+}
+
 func TestItAppliesInstructionsToARover(t *testing.T) {
 	plateau, err := model.CreatePlateau(5, 5)
 	assert.Nil(t, err)

@@ -18,7 +18,7 @@ func main() {
 
 	lines := getLinesFromFile(filename)
 	firstLine := lines[0]
-	plateau, err := model.CreatePlateauFromLine(firstLine)
+	plateau, err := command.CreatePlateauFromLine(firstLine)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -29,14 +29,13 @@ func main() {
 			break
 		}
 
-		rover, err := model.CreateRoverFromLine(lines[i])
+		rover, err := command.CreateRoverFromLine(lines[i])
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		rovers = append(rovers, rover)
-		err = command.ApplyInstructions(plateau, rover, lines[i+1])
-		if err != nil {
+		if err = command.ApplyInstructions(plateau, rover, lines[i+1]); err != nil {
 			log.Fatal(err)
 		}
 	}

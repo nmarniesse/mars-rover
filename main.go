@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/nmarniesse/mars-rover/command"
 	"github.com/nmarniesse/mars-rover/model"
 )
 
@@ -15,23 +16,12 @@ func main() {
 		filename = os.Args[1]
 	}
 
-	content, err := os.ReadFile(filename)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	lines := strings.Split(string(content), "\n")
-	if len(lines) < 3 {
-		log.Fatal("Need at least 3 lines in the file")
-	}
-
+	lines := getLinesFromFile(filename)
 	firstLine := lines[0]
 	plateau, err := model.CreatePlateauFromLine(firstLine)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Println("Plateau created")
 
 	var rovers [](*model.Rover)
 	for i := 1; i < len(lines); i = i + 2 {
@@ -45,19 +35,9 @@ func main() {
 		}
 
 		rovers = append(rovers, rover)
-		log.Println("Rover created")
-		instructions := lines[i+1]
-		for _, instruction := range instructions {
-			switch instruction {
-			case 'M':
-				rover.MoveRoverForward(plateau)
-			case 'L':
-				rover.RotateLeft()
-			case 'R':
-				rover.RotateRight()
-			default:
-				log.Fatal(fmt.Printf("unknown [%c] instruction", instruction))
-			}
+		err = command.ApplyInstructions(plateau, rover, lines[i+1])
+		if err != nil {
+			log.Fatal(err)
 		}
 	}
 
@@ -65,4 +45,18 @@ func main() {
 		fmt.Printf("%d %d %s", rover.X, rover.Y, rover.Direction)
 		fmt.Println("")
 	}
+}
+
+func getLinesFromFile(filename string) []string {
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	lines := strings.Split(string(content), "\n")
+	if len(lines) < 3 {
+		log.Fatal("Need at least 3 lines in the file")
+	}
+
+	return lines
 }

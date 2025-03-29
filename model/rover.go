@@ -19,8 +19,8 @@ func CreateRover(x int, y int, direction string) (*Rover, error) {
 	if y < 0 {
 		return nil, errors.New("y cannot be lower than 0")
 	}
-	if direction != "N" && direction != "S" && direction != "O" && direction != "E" {
-		return nil, errors.New("direction should be N, S, O or E")
+	if direction != "N" && direction != "S" && direction != "W" && direction != "E" {
+		return nil, errors.New("direction should be N, S, W or E")
 	}
 
 	return &Rover{x, y, direction}, nil
@@ -43,4 +43,16 @@ func CreateRoverFromLine(line string) (*Rover, error) {
 	}
 
 	return CreateRover(x, y, elements[2])
+}
+
+func (rover *Rover) MoveForward() {
+	if rover.Direction == "N" {
+		rover.Y++
+	} else if rover.Direction == "S" {
+		rover.Y--
+	} else if rover.Direction == "W" {
+		rover.X--
+	} else if rover.Direction == "E" {
+		rover.X++
+	}
 }

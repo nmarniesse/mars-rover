@@ -53,42 +53,24 @@ func TestItCannotCreateARoverWithNegativeY(t *testing.T) {
 	assert.Error(t, err)
 }
 
-func TestItMovesToNorth(t *testing.T) {
-	rover, err := CreateRover(2, 2, "N")
-	assert.Nil(t, err)
+func TestItMovesARoverForward(t *testing.T) {
+	cases := []struct {
+		rover     *Rover
+		plateau   *Plateau
+		expectedX int
+		expectedY int
+	}{
+		{&Rover{2, 2, "N"}, &Plateau{4, 5}, 2, 3},
+		{&Rover{2, 2, "S"}, &Plateau{4, 5}, 2, 1},
+		{&Rover{2, 2, "W"}, &Plateau{4, 5}, 1, 2},
+		{&Rover{2, 2, "E"}, &Plateau{4, 5}, 3, 2},
+	}
 
-	rover.MoveForward()
+	for _, c := range cases {
+		err := c.rover.MoveRoverForward(c.plateau)
+		assert.Nil(t, err)
 
-	assert.Equal(t, 2, rover.X)
-	assert.Equal(t, 3, rover.Y)
-}
-
-func TestItMovesToSouth(t *testing.T) {
-	rover, err := CreateRover(2, 2, "S")
-	assert.Nil(t, err)
-
-	rover.MoveForward()
-
-	assert.Equal(t, 2, rover.X)
-	assert.Equal(t, 1, rover.Y)
-}
-
-func TestItMovesToWest(t *testing.T) {
-	rover, err := CreateRover(2, 2, "W")
-	assert.Nil(t, err)
-
-	rover.MoveForward()
-
-	assert.Equal(t, 1, rover.X)
-	assert.Equal(t, 2, rover.Y)
-}
-
-func TestItMovesToEast(t *testing.T) {
-	rover, err := CreateRover(2, 2, "E")
-	assert.Nil(t, err)
-
-	rover.MoveForward()
-
-	assert.Equal(t, 3, rover.X)
-	assert.Equal(t, 2, rover.Y)
+		assert.Equal(t, c.expectedX, c.rover.X)
+		assert.Equal(t, c.expectedY, c.rover.Y)
+	}
 }

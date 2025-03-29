@@ -46,22 +46,23 @@ func CreateRoverFromLine(line string) (*Rover, error) {
 }
 
 func (rover *Rover) MoveRoverForward(plateau *Plateau) error {
-	if rover.Direction == "N" {
+	switch rover.Direction {
+	case "N":
 		if rover.Y >= plateau.MaxY {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
 		rover.Y++
-	} else if rover.Direction == "S" {
+	case "S":
 		if rover.Y <= 0 {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
 		rover.Y--
-	} else if rover.Direction == "W" {
+	case "W":
 		if rover.X <= 0 {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
 		rover.X--
-	} else if rover.Direction == "E" {
+	case "E":
 		if rover.X >= plateau.MaxX {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
@@ -69,4 +70,30 @@ func (rover *Rover) MoveRoverForward(plateau *Plateau) error {
 	}
 
 	return nil
+}
+
+func (rover *Rover) RotateLeft() {
+	switch rover.Direction {
+	case "N":
+		rover.Direction = "W"
+	case "S":
+		rover.Direction = "E"
+	case "W":
+		rover.Direction = "S"
+	case "E":
+		rover.Direction = "N"
+	}
+}
+
+func (rover *Rover) RotateRight() {
+	switch rover.Direction {
+	case "N":
+		rover.Direction = "E"
+	case "S":
+		rover.Direction = "W"
+	case "W":
+		rover.Direction = "N"
+	case "E":
+		rover.Direction = "S"
+	}
 }

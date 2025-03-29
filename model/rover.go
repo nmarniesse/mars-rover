@@ -2,28 +2,22 @@ package model
 
 import (
 	"errors"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type Rover struct {
-	X         int
-	Y         int
-	Direction string
+	X         int    `validate:"gte=0"`
+	Y         int    `validate:"gte=0"`
+	Direction string `validate:"oneof=N S W E"`
 }
 
 func CreateRover(x int, y int, direction string) (*Rover, error) {
-	if x < 0 {
-		return nil, errors.New("x cannot be lower than 0")
-	}
+	rover := Rover{x, y, direction}
+	validate := validator.New()
+	err := validate.Struct(rover)
 
-	if y < 0 {
-		return nil, errors.New("y cannot be lower than 0")
-	}
-
-	if direction != "N" && direction != "S" && direction != "W" && direction != "E" {
-		return nil, errors.New("direction should be N, S, W or E")
-	}
-
-	return &Rover{x, y, direction}, nil
+	return &rover, err
 }
 
 func (rover *Rover) MoveForward(plateau *Plateau) error {

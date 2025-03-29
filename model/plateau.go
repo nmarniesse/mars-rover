@@ -1,21 +1,16 @@
 package model
 
-import (
-	"errors"
-)
+import "github.com/go-playground/validator/v10"
 
 type Plateau struct {
-	MaxX int
-	MaxY int
+	MaxX int `validate:"gte=0"`
+	MaxY int `validate:"gte=0"`
 }
 
 func CreatePlateau(maxX int, maxY int) (*Plateau, error) {
-	if maxX <= 0 {
-		return nil, errors.New("maxX cannot be equal or lower than 0")
-	}
-	if maxY <= 0 {
-		return nil, errors.New("maxY cannot be equal or lower than 0")
-	}
+	plateau := Plateau{maxX, maxY}
+	validate := validator.New()
+	err := validate.Struct(plateau)
 
-	return &Plateau{maxX, maxY}, nil
+	return &plateau, err
 }

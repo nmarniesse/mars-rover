@@ -16,6 +16,7 @@ alias go="docker run -v ./:/app -v ./GOPATH:/go -w /app golang go"
 ## Run
 
 ```bash
+make run
 go run .
 go run . input/challenge.txt
 ```
@@ -23,6 +24,7 @@ go run . input/challenge.txt
 ## Tests
 
 ```bash
+make test
 go test ./...
 ```
 

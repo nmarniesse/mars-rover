@@ -1,16 +1,29 @@
 # Mars rover
 
-Implementation of the (Google Mars Rover challenge)[https://code.google.com/archive/p/marsrovertechchallenge/] in go. 
+Implementation of the [Google Mars Rover challenge](https://code.google.com/archive/p/marsrovertechchallenge/) in Go.
+
 
 ## Requirements
 
-- Docker
+- [Go](https://go.dev) or [Docker](https://www.docker.com)
+
+If docker, run this command to create an alias:
+
+```bash
+alias go="docker run -v ./:/app -v ./GOPATH:/go -w /app golang go"
+```
 
 ## Run
 
 ```bash
-./go.sh run main.go
-./go.sh run main.go input/challenge.txt
+go run .
+go run . input/challenge.txt
+```
+
+## Tests
+
+```bash
+go test ./...
 ```
 
 ## TODO

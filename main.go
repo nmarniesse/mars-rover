@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
+
 	"github.com/nmarniesse/mars-rover/model"
 )
 
@@ -26,7 +27,7 @@ func main() {
 	}
 
 	firstLine := lines[0]
-	_, err = model.CreatePlateauFromLine(firstLine)
+	plateau, err := model.CreatePlateauFromLine(firstLine)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +35,6 @@ func main() {
 	log.Println("Plateau created")
 
 	var rovers [](*model.Rover)
-
 	for i := 1; i < len(lines); i = i + 2 {
 		if lines[i] == "" {
 			break
@@ -47,6 +47,19 @@ func main() {
 
 		rovers = append(rovers, rover)
 		log.Println("Rover created")
+		instructions := lines[i+1]
+		for _, instruction := range instructions {
+			switch instruction {
+			case 'M':
+				rover.MoveRoverForward(plateau)
+			case 'L':
+				rover.RotateLeft()
+			case 'R':
+				rover.RotateRight()
+			default:
+				log.Fatal(fmt.Printf("unknown [%c] instruction", instruction))
+			}
+		}
 	}
 
 	for _, rover := range rovers {

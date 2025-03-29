@@ -21,13 +21,36 @@ func main() {
 
 	fmt.Println(string(content))
 	lines := strings.Split(string(content), "\n")
-	if len(lines) < 2 {
-		log.Fatal("Need at least 2 lines in the file")
+	if len(lines) < 3 {
+		log.Fatal("Need at least 3 lines in the file")
 	}
 
 	firstLine := lines[0]
-	model.CreatePlateauFromLine(firstLine)
+	_, err = model.CreatePlateauFromLine(firstLine)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Println("Plateau created")
+	log.Println("Plateau created")
 
+	var rovers [](*model.Rover)
+
+	for i := 1; i < len(lines); i = i + 2 {
+		if lines[i] == "" {
+			break
+		}
+
+		rover, err := model.CreateRoverFromLine(lines[i])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		rovers = append(rovers, rover)
+		log.Println("Rover created")
+	}
+
+	for _, rover := range rovers {
+		fmt.Printf("%d %d %s", rover.X, rover.Y, rover.Direction)
+		fmt.Println("")
+	}
 }

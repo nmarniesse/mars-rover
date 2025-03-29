@@ -20,7 +20,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(string(content))
 	lines := strings.Split(string(content), "\n")
 	if len(lines) < 3 {
 		log.Fatal("Need at least 3 lines in the file")

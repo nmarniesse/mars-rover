@@ -13,7 +13,14 @@ If docker, run this command to create an alias:
 alias go="docker run -v ./:/app -v ./GOPATH:/go -w /app golang go"
 ```
 
-## Run
+## Build & run
+
+```bash
+make build
+./mars-rover # Depends of your OS
+```
+
+## Run dev
 
 ```bash
 make run

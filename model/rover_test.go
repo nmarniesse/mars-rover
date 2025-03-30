@@ -11,9 +11,9 @@ func TestItCreatesARover(t *testing.T) {
 	rover, err := CreateRover(1, 2, "N", plateau)
 	assert.Nil(t, err)
 
-	assert.Equal(t, 1, rover.X)
-	assert.Equal(t, 2, rover.Y)
-	assert.Equal(t, "N", rover.Direction)
+	assert.Equal(t, 1, rover.x)
+	assert.Equal(t, 2, rover.y)
+	assert.Equal(t, "N", rover.direction)
 }
 
 func TestItCannotCreateARoverWithWrongDirection(t *testing.T) {
@@ -24,7 +24,8 @@ func TestItCannotCreateARoverWithWrongDirection(t *testing.T) {
 
 func TestItCannotCreateARoverWithNegativeX(t *testing.T) {
 	plateau, _ := CreatePlateau(5, 5)
-	_, err := CreateRover(-1, 2, "N", plateau)
+	rover, err := CreateRover(-1, 2, "N", plateau)
+	assert.Nil(t, rover)
 	assert.Error(t, err)
 }
 
@@ -56,7 +57,7 @@ func TestItMovesARoverForward(t *testing.T) {
 		err := c.rover.MoveForward()
 		assert.Nil(t, err)
 
-		assert.Equal(t, c.expectedX, c.rover.X)
-		assert.Equal(t, c.expectedY, c.rover.Y)
+		assert.Equal(t, c.expectedX, c.rover.x)
+		assert.Equal(t, c.expectedY, c.rover.y)
 	}
 }

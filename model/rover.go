@@ -2,81 +2,96 @@ package model
 
 import (
 	"errors"
-
-	"github.com/go-playground/validator/v10"
 )
 
 type Rover struct {
-	X         int      `validate:"gte=0"`
-	Y         int      `validate:"gte=0"`
-	Direction string   `validate:"oneof=N S W E"`
-	plateau   *Plateau `validate:"required"`
+	x         int
+	y         int
+	direction string
+	plateau   *Plateau
 }
 
 func CreateRover(x int, y int, direction string, plateau *Plateau) (*Rover, error) {
+	if x < 0 {
+		return nil, errors.New("x cannot be negative")
+	}
+
+	if y < 0 {
+		return nil, errors.New("y cannot be negative")
+	}
+
+	if direction != "N" && direction != "S" && direction != "W" && direction != "E" {
+		return nil, errors.New("direction is not valid")
+	}
+
 	if plateau == nil {
 		return nil, errors.New("Plateau is nil")
 	}
 
-	rover := Rover{x, y, direction, plateau}
-	validate := validator.New()
-	err := validate.Struct(rover)
-	if err != nil {
-		return nil, err
-	}
+	return &Rover{x, y, direction, plateau}, nil
+}
 
-	return &rover, nil
+func (rover *Rover) X() int {
+	return rover.x
+}
+
+func (rover *Rover) Y() int {
+	return rover.y
+}
+
+func (rover *Rover) Direction() string {
+	return rover.direction
 }
 
 func (rover *Rover) MoveForward() error {
-	switch rover.Direction {
+	switch rover.direction {
 	case "N":
-		if rover.Y >= rover.plateau.MaxY {
+		if rover.y >= rover.plateau.MaxY {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
-		rover.Y++
+		rover.y++
 	case "S":
-		if rover.Y <= 0 {
+		if rover.y <= 0 {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
-		rover.Y--
+		rover.y--
 	case "W":
-		if rover.X <= 0 {
+		if rover.x <= 0 {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
-		rover.X--
+		rover.x--
 	case "E":
-		if rover.X >= rover.plateau.MaxX {
+		if rover.x >= rover.plateau.MaxX {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
-		rover.X++
+		rover.x++
 	}
 
 	return nil
 }
 
 func (rover *Rover) RotateLeft() {
-	switch rover.Direction {
+	switch rover.direction {
 	case "N":
-		rover.Direction = "W"
+		rover.direction = "W"
 	case "S":
-		rover.Direction = "E"
+		rover.direction = "E"
 	case "W":
-		rover.Direction = "S"
+		rover.direction = "S"
 	case "E":
-		rover.Direction = "N"
+		rover.direction = "N"
 	}
 }
 
 func (rover *Rover) RotateRight() {
-	switch rover.Direction {
+	switch rover.direction {
 	case "N":
-		rover.Direction = "E"
+		rover.direction = "E"
 	case "S":
-		rover.Direction = "W"
+		rover.direction = "W"
 	case "W":
-		rover.Direction = "N"
+		rover.direction = "N"
 	case "E":
-		rover.Direction = "S"
+		rover.direction = "S"
 	}
 }

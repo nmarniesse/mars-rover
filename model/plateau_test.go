@@ -25,7 +25,7 @@ func TestItAddsARoverOnPlateau(t *testing.T) {
 	rover, err := plateau.AddRover(4, 5, "S")
 
 	assert.Nil(t, err)
-	assert.Equal(t, 4, rover.X)
+	assert.Equal(t, 4, rover.x)
 	assert.Equal(t, 1, len(plateau.Rovers))
 }
 

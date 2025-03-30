@@ -33,9 +33,9 @@ func TestItAddsARoverFromLine(t *testing.T) {
 		rover, err := AddRoverFromLine(plateau, c.line)
 		assert.Nil(t, err)
 
-		assert.Equal(t, c.expectedX, rover.X)
-		assert.Equal(t, c.expectedY, rover.Y)
-		assert.Equal(t, c.expectedDirection, rover.Direction)
+		assert.Equal(t, c.expectedX, rover.X())
+		assert.Equal(t, c.expectedY, rover.Y())
+		assert.Equal(t, c.expectedDirection, rover.Direction())
 	}
 }
 
@@ -68,8 +68,8 @@ func TestItAppliesInstructionsToARover(t *testing.T) {
 		err = ApplyInstructions(c.rover, c.instructions)
 		assert.Nil(t, err)
 
-		assert.Equal(t, c.expectedX, c.rover.X)
-		assert.Equal(t, c.expectedY, c.rover.Y)
-		assert.Equal(t, c.expectedDirections, c.rover.Direction)
+		assert.Equal(t, c.expectedX, c.rover.X())
+		assert.Equal(t, c.expectedY, c.rover.Y())
+		assert.Equal(t, c.expectedDirections, c.rover.Direction())
 	}
 }

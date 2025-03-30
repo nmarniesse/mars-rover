@@ -15,7 +15,7 @@ func TestItCreatesAPlateauFromLine(t *testing.T) {
 	assert.Equal(t, 5, p.MaxY)
 }
 
-func TestItCreatesARoverFromLine(t *testing.T) {
+func TestItAddsARoverFromLine(t *testing.T) {
 	cases := []struct {
 		line              string
 		expectedX         int
@@ -28,8 +28,9 @@ func TestItCreatesARoverFromLine(t *testing.T) {
 		{"0 2 E", 0, 2, "E"},
 	}
 
+	plateau, _ := model.CreatePlateau(5, 5)
 	for _, c := range cases {
-		rover, err := CreateRoverFromLine(c.line)
+		rover, err := AddRoverFromLine(plateau, c.line)
 		assert.Nil(t, err)
 
 		assert.Equal(t, c.expectedX, rover.X)
@@ -38,24 +39,33 @@ func TestItCreatesARoverFromLine(t *testing.T) {
 	}
 }
 
+func TestItCannotAddARoverFromLine(t *testing.T) {
+	plateau, _ := model.CreatePlateau(4, 5)
+	rover, err := AddRoverFromLine(plateau, "5 2 N")
+	assert.Nil(t, rover)
+	assert.Error(t, err)
+}
+
 func TestItAppliesInstructionsToARover(t *testing.T) {
 	plateau, err := model.CreatePlateau(5, 5)
 	assert.Nil(t, err)
 
+	rover1, _ := model.CreateRover(1, 2, "N", plateau)
+	rover2, _ := model.CreateRover(3, 3, "E", plateau)
+
 	cases := []struct {
-		plateau            *model.Plateau
 		rover              *model.Rover
 		instructions       string
 		expectedX          int
 		expectedY          int
 		expectedDirections string
 	}{
-		{plateau, &model.Rover{X: 1, Y: 2, Direction: "N"}, "LMLMLMLMM", 1, 3, "N"},
-		{plateau, &model.Rover{X: 3, Y: 3, Direction: "E"}, "MMRMMRMRRM", 5, 1, "E"},
+		{rover1, "LMLMLMLMM", 1, 3, "N"},
+		{rover2, "MMRMMRMRRM", 5, 1, "E"},
 	}
 
 	for _, c := range cases {
-		err = ApplyInstructions(c.plateau, c.rover, c.instructions)
+		err = ApplyInstructions(c.rover, c.instructions)
 		assert.Nil(t, err)
 
 		assert.Equal(t, c.expectedX, c.rover.X)

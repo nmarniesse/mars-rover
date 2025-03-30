@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/nmarniesse/mars-rover/command"
-	"github.com/nmarniesse/mars-rover/model"
 )
 
 func main() {
@@ -23,24 +22,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var rovers [](*model.Rover)
 	for i := 1; i < len(lines); i = i + 2 {
 		if lines[i] == "" {
 			break
 		}
 
-		rover, err := command.CreateRoverFromLine(lines[i])
+		rover, err := command.AddRoverFromLine(plateau, lines[i])
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		rovers = append(rovers, rover)
-		if err = command.ApplyInstructions(plateau, rover, lines[i+1]); err != nil {
+		if err = command.ApplyInstructions(rover, lines[i+1]); err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	for _, rover := range rovers {
+	for _, rover := range plateau.Rovers {
 		fmt.Printf("%d %d %s", rover.X, rover.Y, rover.Direction)
 		fmt.Println("")
 	}

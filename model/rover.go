@@ -7,23 +7,31 @@ import (
 )
 
 type Rover struct {
-	X         int    `validate:"gte=0"`
-	Y         int    `validate:"gte=0"`
-	Direction string `validate:"oneof=N S W E"`
+	X         int      `validate:"gte=0"`
+	Y         int      `validate:"gte=0"`
+	Direction string   `validate:"oneof=N S W E"`
+	plateau   *Plateau `validate:"required"`
 }
 
-func CreateRover(x int, y int, direction string) (*Rover, error) {
-	rover := Rover{x, y, direction}
+func CreateRover(x int, y int, direction string, plateau *Plateau) (*Rover, error) {
+	if plateau == nil {
+		return nil, errors.New("Plateau is nil")
+	}
+
+	rover := Rover{x, y, direction, plateau}
 	validate := validator.New()
 	err := validate.Struct(rover)
+	if err != nil {
+		return nil, err
+	}
 
-	return &rover, err
+	return &rover, nil
 }
 
-func (rover *Rover) MoveForward(plateau *Plateau) error {
+func (rover *Rover) MoveForward() error {
 	switch rover.Direction {
 	case "N":
-		if rover.Y >= plateau.MaxY {
+		if rover.Y >= rover.plateau.MaxY {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
 		rover.Y++
@@ -38,7 +46,7 @@ func (rover *Rover) MoveForward(plateau *Plateau) error {
 		}
 		rover.X--
 	case "E":
-		if rover.X >= plateau.MaxX {
+		if rover.X >= rover.plateau.MaxX {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
 		rover.X++

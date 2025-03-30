@@ -28,7 +28,7 @@ func CreatePlateauFromLine(line string) (*model.Plateau, error) {
 	return model.CreatePlateau(maxX, maxY)
 }
 
-func CreateRoverFromLine(line string) (*model.Rover, error) {
+func AddRoverFromLine(plateau *model.Plateau, line string) (*model.Rover, error) {
 	elements := strings.Split(line, " ")
 	if len(elements) != 3 {
 		return nil, errors.New("error while creating rover from line: expecting exactly 3 elements")
@@ -44,14 +44,14 @@ func CreateRoverFromLine(line string) (*model.Rover, error) {
 		return nil, errors.New("error while creating rover from line: second element not an integer")
 	}
 
-	return model.CreateRover(x, y, elements[2])
+	return plateau.AddRover(x, y, elements[2])
 }
 
-func ApplyInstructions(plateau *model.Plateau, rover *model.Rover, instructions string) error {
+func ApplyInstructions(rover *model.Rover, instructions string) error {
 	for _, instruction := range instructions {
 		switch instruction {
 		case 'M':
-			rover.MoveForward(plateau)
+			rover.MoveForward()
 		case 'L':
 			rover.RotateLeft()
 		case 'R':

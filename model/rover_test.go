@@ -61,3 +61,43 @@ func TestItMovesARoverForward(t *testing.T) {
 		assert.Equal(t, c.expectedY, c.rover.y)
 	}
 }
+
+func TestItRotatesToTheLeft(t *testing.T) {
+	plateau, _ := CreatePlateau(4, 5)
+	cases := []struct {
+		initialDirection  string
+		expectedDirection string
+	}{
+		{"N", "W"},
+		{"W", "S"},
+		{"S", "E"},
+		{"E", "N"},
+	}
+
+	for _, c := range cases {
+		rover, _ := CreateRover(2, 2, c.initialDirection, plateau)
+		rover.RotateLeft()
+
+		assert.Equal(t, c.expectedDirection, rover.Direction())
+	}
+}
+
+func TestItRotatesToTheRight(t *testing.T) {
+	plateau, _ := CreatePlateau(4, 5)
+	cases := []struct {
+		initialDirection  string
+		expectedDirection string
+	}{
+		{"N", "E"},
+		{"E", "S"},
+		{"S", "W"},
+		{"W", "N"},
+	}
+
+	for _, c := range cases {
+		rover, _ := CreateRover(2, 2, c.initialDirection, plateau)
+		rover.RotateRight()
+
+		assert.Equal(t, c.expectedDirection, rover.Direction())
+	}
+}

@@ -18,9 +18,7 @@ func CreatePlateau(maxX int, maxY int) (*Plateau, error) {
 		return nil, errors.New("maxY cannot be negative")
 	}
 
-	var rovers []*Rover
-
-	return &Plateau{maxX, maxY, rovers}, nil
+	return &Plateau{maxX, maxY, make([]*Rover, 0)}, nil
 }
 
 func (plateau *Plateau) MaxX() int {

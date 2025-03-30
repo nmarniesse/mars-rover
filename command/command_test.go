@@ -11,8 +11,8 @@ func TestItCreatesAPlateauFromLine(t *testing.T) {
 	p, err := CreatePlateauFromLine("4 5")
 	assert.Nil(t, err)
 
-	assert.Equal(t, 4, p.MaxX)
-	assert.Equal(t, 5, p.MaxY)
+	assert.Equal(t, 4, p.MaxX())
+	assert.Equal(t, 5, p.MaxY())
 }
 
 func TestItAddsARoverFromLine(t *testing.T) {

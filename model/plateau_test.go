@@ -10,9 +10,9 @@ func TestItCreatesAPlateau(t *testing.T) {
 	p, err := CreatePlateau(4, 5)
 	assert.Nil(t, err)
 
-	assert.Equal(t, 4, p.MaxX)
-	assert.Equal(t, 5, p.MaxY)
-	assert.Equal(t, 0, len(p.Rovers))
+	assert.Equal(t, 4, p.maxX)
+	assert.Equal(t, 5, p.maxY)
+	assert.Equal(t, 0, len(p.rovers))
 }
 
 func TestItCannotCreateAPlateauWithNegativeX(t *testing.T) {
@@ -26,14 +26,14 @@ func TestItAddsARoverOnPlateau(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, 4, rover.x)
-	assert.Equal(t, 1, len(plateau.Rovers))
+	assert.Equal(t, 1, len(plateau.rovers))
 }
 
-func TestItCannotAddARoverOnPlateau(t *testing.T) {
+func TestItCannotAddARoverOutsideThePlateau(t *testing.T) {
 	plateau, _ := CreatePlateau(4, 5)
 	rover, err := plateau.AddRover(5, 5, "S")
 
 	assert.Error(t, err)
 	assert.Nil(t, rover)
-	assert.Equal(t, 0, len(plateau.Rovers))
+	assert.Equal(t, 0, len(plateau.rovers))
 }

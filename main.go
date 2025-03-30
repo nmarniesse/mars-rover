@@ -37,7 +37,7 @@ func main() {
 		}
 	}
 
-	for _, rover := range plateau.Rovers {
+	for _, rover := range plateau.Rovers() {
 		fmt.Printf("%d %d %s", rover.X(), rover.Y(), rover.Direction())
 		fmt.Println("")
 	}

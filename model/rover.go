@@ -25,7 +25,7 @@ func CreateRover(x int, y int, direction string, plateau *Plateau) (*Rover, erro
 	}
 
 	if plateau == nil {
-		return nil, errors.New("Plateau is nil")
+		return nil, errors.New("Plateau is not defined")
 	}
 
 	return &Rover{x, y, direction, plateau}, nil
@@ -46,7 +46,7 @@ func (rover *Rover) Direction() string {
 func (rover *Rover) MoveForward() error {
 	switch rover.direction {
 	case "N":
-		if rover.y >= rover.plateau.MaxY {
+		if rover.y >= rover.plateau.maxY {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
 		rover.y++
@@ -61,7 +61,7 @@ func (rover *Rover) MoveForward() error {
 		}
 		rover.x--
 	case "E":
-		if rover.x >= rover.plateau.MaxX {
+		if rover.x >= rover.plateau.maxX {
 			return errors.New("out of bound: cannot move the rover forward")
 		}
 		rover.x++

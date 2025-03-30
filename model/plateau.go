@@ -2,31 +2,45 @@ package model
 
 import (
 	"errors"
-
-	"github.com/go-playground/validator/v10"
 )
 
 type Plateau struct {
-	MaxX   int `validate:"gte=0"`
-	MaxY   int `validate:"gte=0"`
-	Rovers []*Rover
+	maxX   int
+	maxY   int
+	rovers []*Rover
 }
 
 func CreatePlateau(maxX int, maxY int) (*Plateau, error) {
-	var rovers []*Rover
-	plateau := Plateau{maxX, maxY, rovers}
-	validate := validator.New()
-	err := validate.Struct(plateau)
+	if maxX < 0 {
+		return nil, errors.New("maxX cannot be negative")
+	}
+	if maxY < 0 {
+		return nil, errors.New("maxY cannot be negative")
+	}
 
-	return &plateau, err
+	var rovers []*Rover
+
+	return &Plateau{maxX, maxY, rovers}, nil
+}
+
+func (plateau *Plateau) MaxX() int {
+	return plateau.maxX
+}
+
+func (plateau *Plateau) MaxY() int {
+	return plateau.maxY
+}
+
+func (plateau *Plateau) Rovers() []*Rover {
+	return plateau.rovers
 }
 
 func (plateau *Plateau) AddRover(x int, y int, direction string) (*Rover, error) {
-	if x > plateau.MaxX {
-		return nil, errors.New("Rover has not landed on the plateau")
+	if x > plateau.maxX {
+		return nil, errors.New("rover has not landed on the plateau")
 	}
-	if y > plateau.MaxY {
-		return nil, errors.New("Rover has not landed on the plateau")
+	if y > plateau.maxY {
+		return nil, errors.New("rover has not landed on the plateau")
 	}
 
 	rover, err := CreateRover(x, y, direction, plateau)
@@ -34,7 +48,7 @@ func (plateau *Plateau) AddRover(x int, y int, direction string) (*Rover, error)
 		return nil, err
 	}
 
-	plateau.Rovers = append(plateau.Rovers, rover)
+	plateau.rovers = append(plateau.rovers, rover)
 
 	return rover, nil
 }
